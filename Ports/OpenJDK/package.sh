@@ -44,6 +44,7 @@ configure() {
         --with-tools-dir=${SERENITY_TOOLCHAIN_BINDIR} \
         --with-extra-cflags="${WARNING_IGNORE_FLAGS}" \
         --with-extra-cxxflags="${WARNING_IGNORE_FLAGS}" \
+        --with-boot-jdk="/usr/lib/jvm/openjdk-bin-17" \
         "${TOOLCHAIN_ARGS[@]}"
 }
 
