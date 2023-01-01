@@ -117,6 +117,7 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
         return -1;
     }
     auto interpreter_path = interpreter_path_builder.string_view();
+    dbgln("interpreter_path: {}", interpreter_path);
 
     RefPtr<ELF::DynamicObject> object = nullptr;
     if (elf_image.is_dynamic()) {
