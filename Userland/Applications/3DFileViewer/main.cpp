@@ -355,7 +355,7 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     args_parser.parse(arguments);
 
     if (filename.is_empty())
-        filename = "/home/anon/Documents/3D Models/teapot.obj"sv;
+        filename = "/home/anon/Documents/3D Models/Lantern.glb"sv;
 
     TRY(Core::System::pledge("stdio thread recvfd sendfd rpath unix prot_exec map_fixed"));
 
