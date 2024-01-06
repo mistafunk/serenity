@@ -8,6 +8,7 @@ serenity_component(
 set(SOURCES
     Mesh.cpp
     WavefrontOBJLoader.cpp
+    GltfLoader.cpp
     main.cpp
 )
 
