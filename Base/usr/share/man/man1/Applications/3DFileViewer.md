@@ -14,7 +14,7 @@ $ 3DFileViewer [file]
 
 `3D File Viewer` is an application for viewing 3D models.
 
-It currently supports opening the [Wavefront OBJ file format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) (`.obj`).
+It currently supports opening the [Wavefront OBJ file format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) (`.obj`) and the Khronos glTF binary format (`.glb`)..
 
 ## Features
 

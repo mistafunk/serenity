@@ -27,6 +27,7 @@
 #include <LibGfx/Palette.h>
 #include <LibMain/Main.h>
 
+#include "GltfLoader.h"
 #include "Mesh.h"
 #include "WavefrontOBJLoader.h"
 
@@ -54,7 +55,6 @@ public:
 
 private:
     GLContextWidget()
-        : m_mesh_loader(adopt_own(*new WavefrontOBJLoader()))
     {
         constexpr u16 RENDER_WIDTH = 640;
         constexpr u16 RENDER_HEIGHT = 480;
@@ -107,7 +107,7 @@ private:
     RefPtr<Mesh> m_mesh;
     RefPtr<Gfx::Bitmap> m_bitmap;
     OwnPtr<GL::GLContext> m_context;
-    NonnullOwnPtr<WavefrontOBJLoader> m_mesh_loader;
+    OwnPtr<MeshLoader> m_mesh_loader;
     Core::ElapsedTimer m_framerate_timer;
     GLuint m_init_list { 0 };
     bool m_rotate_x = true;
@@ -291,7 +291,11 @@ void GLContextWidget::timer_event(Core::TimerEvent&)
 
 bool GLContextWidget::load_file(ByteString const& filename, NonnullOwnPtr<Core::File> file)
 {
-    if (!filename.ends_with(".obj"sv)) {
+    if (filename.ends_with(".obj"sv)) {
+        m_mesh_loader = adopt_own(*new WavefrontOBJLoader());
+    } else if (filename.ends_with(".glb"sv)) {
+        m_mesh_loader = adopt_own(*new GltfLoader());
+    } else {
         GUI::MessageBox::show(window(), ByteString::formatted("Opening \"{}\" failed: invalid file type", filename), "Error"sv, GUI::MessageBox::Type::Error);
         return false;
     }
@@ -382,7 +386,9 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
 
     file_menu->add_action(GUI::CommonActions::make_open_action([&](auto&) {
         FileSystemAccessClient::OpenFileOptions options {
-            .allowed_file_types = { { GUI::FileTypeFilter { "Object Files", { { "obj" } } }, GUI::FileTypeFilter::all_files() } },
+            .allowed_file_types = { { GUI::FileTypeFilter { "Object Files", { { "obj" } } },
+                GUI::FileTypeFilter { "Khronos Binary glTF", { { "glb" } } },
+                GUI::FileTypeFilter::all_files() } },
         };
         auto response = FileSystemAccessClient::Client::the().open_file(window, options);
         if (response.is_error())
