@@ -13,8 +13,8 @@
 #include <LibGUI/Painter.h>
 #include <LibGUI/Widget.h>
 
-#include "Mesh.h"
-#include "MeshLoader.h"
+#include "Scene.h"
+#include "SceneLoader.h"
 
 class GLContextWidget final : public GUI::Frame {
     C_OBJECT(GLContextWidget);
@@ -48,10 +48,10 @@ private:
 private:
     static constexpr u32 UPDATE_FRAMERATE_EVERY_FRAMES = 30;
 
-    RefPtr<Mesh> m_mesh;
+    RefPtr<Scene> m_scene;
     RefPtr<Gfx::Bitmap> m_bitmap;
     OwnPtr<GL::GLContext> m_context;
-    OwnPtr<MeshLoader> m_mesh_loader;
+    OwnPtr<SceneLoader> m_scene_loader;
     Core::ElapsedTimer m_framerate_timer;
     GLuint m_init_list { 0 };
     bool m_rotate_x = true;

@@ -10,12 +10,12 @@
 #include <LibCore/Forward.h>
 
 #include "Common.h"
-#include "Mesh.h"
+#include "Scene.h"
 
-class MeshLoader {
+class SceneLoader {
 public:
-    MeshLoader() = default;
-    virtual ~MeshLoader() = default;
+    SceneLoader() = default;
+    virtual ~SceneLoader() = default;
 
-    virtual ErrorOr<NonnullRefPtr<Mesh>> load(ByteString const& filename, NonnullOwnPtr<Core::File> file) = 0;
+    virtual ErrorOr<NonnullRefPtr<Scene>> load(ByteString const& filename, NonnullOwnPtr<Core::File> file) = 0;
 };

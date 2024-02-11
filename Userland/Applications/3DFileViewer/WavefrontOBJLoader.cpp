@@ -25,7 +25,7 @@ static ErrorOr<GLfloat> parse_float(StringView string)
     return maybe_float.release_value();
 }
 
-ErrorOr<NonnullRefPtr<Mesh>> WavefrontOBJLoader::load(ByteString const& filename, NonnullOwnPtr<Core::File> file)
+ErrorOr<NonnullRefPtr<Scene>> WavefrontOBJLoader::load(ByteString const& filename, NonnullOwnPtr<Core::File> file)
 {
     auto buffered_file = TRY(Core::InputBufferedFile::create(move(file)));
 
@@ -125,5 +125,6 @@ ErrorOr<NonnullRefPtr<Mesh>> WavefrontOBJLoader::load(ByteString const& filename
     }
 
     dbgln("Wavefront: Done.");
-    return adopt_ref(*new Mesh(vertices, tex_coords, normals, triangles));
+    NonnullRefPtr<Mesh> mesh = adopt_ref(*new Mesh(vertices, tex_coords, normals, triangles));
+    return adopt_ref(*new Scene(mesh));
 }

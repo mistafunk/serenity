@@ -171,8 +171,8 @@ void GLContextWidget::timer_event(Core::TimerEvent&)
     }
     glScalef(m_zoom, m_zoom, m_zoom);
 
-    if (!m_mesh.is_null())
-        m_mesh->draw(m_texture_scale);
+    if (m_scene)
+        m_scene->draw(m_texture_scale);
 
     m_context->present();
 
@@ -202,15 +202,15 @@ void GLContextWidget::timer_event(Core::TimerEvent&)
 bool GLContextWidget::load_file(ByteString const& filename, NonnullOwnPtr<Core::File> file)
 {
     if (filename.ends_with(".obj"sv)) {
-        m_mesh_loader = adopt_own(*new WavefrontOBJLoader());
+        m_scene_loader = adopt_own(*new WavefrontOBJLoader());
     } else {
         GUI::MessageBox::show(window(), ByteString::formatted("Opening \"{}\" failed: invalid file type", filename), "Error"sv, GUI::MessageBox::Type::Error);
         return false;
     }
 
-    auto new_mesh = m_mesh_loader->load(filename, move(file));
-    if (new_mesh.is_error()) {
-        GUI::MessageBox::show(window(), ByteString::formatted("Reading \"{}\" failed: {}", filename, new_mesh.release_error()), "Error"sv, GUI::MessageBox::Type::Error);
+    auto new_scene = m_scene_loader->load(filename, move(file));
+    if (new_scene.is_error()) {
+        GUI::MessageBox::show(window(), ByteString::formatted("Reading \"{}\" failed: {}", filename, new_scene.release_error()), "Error"sv, GUI::MessageBox::Type::Error);
         return false;
     }
 
@@ -239,8 +239,8 @@ bool GLContextWidget::load_file(ByteString const& filename, NonnullOwnPtr<Core::
         dbgln("3DFileViewer: Couldn't load texture for {}", filename);
     }
 
-    m_mesh = new_mesh.release_value();
-    dbgln("3DFileViewer: mesh has {} triangles.", m_mesh->triangle_count());
+    m_scene = new_scene.release_value();
+    dbgln("3DFileViewer: mesh has {} triangles.", m_scene->triangle_count());
 
     window()->set_title(ByteString::formatted("{} - 3D File Viewer", filename));
 

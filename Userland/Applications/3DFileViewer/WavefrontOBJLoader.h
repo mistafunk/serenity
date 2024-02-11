@@ -11,12 +11,12 @@
 #include <AK/RefPtr.h>
 
 #include "Mesh.h"
-#include "MeshLoader.h"
+#include "SceneLoader.h"
 
-class WavefrontOBJLoader final : public MeshLoader {
+class WavefrontOBJLoader final : public SceneLoader {
 public:
     WavefrontOBJLoader() = default;
     ~WavefrontOBJLoader() override = default;
 
-    ErrorOr<NonnullRefPtr<Mesh>> load(ByteString const& filename, NonnullOwnPtr<Core::File> file) override;
+    ErrorOr<NonnullRefPtr<Scene>> load(ByteString const& filename, NonnullOwnPtr<Core::File> file) override;
 };
