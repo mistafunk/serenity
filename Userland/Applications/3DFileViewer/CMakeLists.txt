@@ -9,6 +9,7 @@ set(SOURCES
     Mesh.cpp
     WavefrontOBJLoader.cpp
     GltfLoader.cpp
+    GLContextWidget.cpp
     main.cpp
 )
 
